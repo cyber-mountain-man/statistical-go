@@ -6,14 +6,29 @@ import (
 	"github.com/cyber-mountain-man/statistical-go/montecarlo"
 )
 
-// --- Descriptive Statistics ----
-var Mean = stat.Mean
-var Variance = stat.Variance
-var StdDev = stat.StdDev
+// --- Descriptive Stats Wrappers ---
+func Mean(data []float64) float64 {
+	return stat.Mean(data)
+}
 
-// --- Probability ---
-var ConditionalProbability = probability.ConditionalProbability
+func Variance(data []float64) float64 {
+	return stat.Variance(data)
+}
 
-// --- Monte Carlo ---
-var EstimatePi = montecarlo.EstimatePi
-var EstimatePiParallel = montecarlo.EstimatePiParallel
+func StdDev(data []float64) float64 {
+	return stat.StdDev(data)
+}
+
+// --- Probability Wrappers ---
+func ConditionalProbability(probAandB, probB float64) float64 {
+	return probability.Conditional(probAandB, probB)
+}
+
+// --- Monte Carlo Wrappers ---
+func EstimatePi(iterations int) float64 {
+	return montecarlo.EstimatePi(iterations)
+}
+
+func EstimatePiParallel(total, workers int) float64 {
+	return montecarlo.EstimatePiParallel(total, workers)
+}
