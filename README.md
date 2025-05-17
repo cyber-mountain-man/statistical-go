@@ -1,6 +1,7 @@
 # 📊 statistical-go
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/cyber-mountain-man/statistical-go)](https://goreportcard.com/report/github.com/cyber-mountain-man/statistical-go)
+[![Go Report Card](https://goreportcard.com/badge/github.com/cyber-mountain-man/statistical-go?t=1)](https://goreportcard.com/report/github.com/cyber-mountain-man/statistical-go)
+
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Go](https://img.shields.io/badge/Go-1.21+-00ADD8.svg)
 ![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen)
