@@ -3,7 +3,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/cyber-mountain-man/statistical-go?t=1)](https://goreportcard.com/report/github.com/cyber-mountain-man/statistical-go)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Go](https://img.shields.io/badge/Go-1.21+-00ADD8.svg)
-![Coverage](https://img.shields.io/badge/Coverage-91.7%25-yellowgreen)
+![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen)
 
 A lightweight, dependency-free Go package for performing descriptive statistics, probability rules, and Monte Carlo simulations — all using the Go standard library.
 
@@ -32,7 +32,7 @@ A lightweight, dependency-free Go package for performing descriptive statistics,
   - `statistical.go` wrapper simplifies access to core functions
 
 - 🧪 **Test Coverage**
-  - ✅ 100% for core packages (`stat`, `probability`, `montecarlo`, `statistical`)
+  - ✅ 100% for all core packages (`stat`, `probability`, `montecarlo`, `statistical`)
   - ⚠️ `examples/` directory intentionally excluded from tests
 
 - 💡 **Design Philosophy**
@@ -109,7 +109,7 @@ go tool cover -func=coverage.out         # summary in terminal
 go tool cover -html=coverage.out         # opens browser in detail
 ```
 
-> 💡 *Current total test coverage: 91.7% (100% for all core logic)*
+> 💡 *Current total test coverage: 100% (core logic fully tested; examples excluded by design)*
 
 ---
 
@@ -122,7 +122,10 @@ statistical-go/
 │   └── descriptive_test.go
 ├── probability/        # Probability rules
 │   ├── basic.go
-│   └── conditional.go
+│   ├── conditional.go
+│   ├── normal.go
+│   ├── binomial.go
+│   └── *_test.go
 ├── montecarlo/         # Monte Carlo simulations
 │   ├── pi.go
 │   └── pi_test.go
@@ -142,7 +145,7 @@ statistical-go/
 * [x] Correlation & variability
 * [x] Monte Carlo simulation
 * [x] Unified wrapper interface
-* [ ] Probability distributions (Normal, Binomial)
+* [x] Probability distributions (Normal, Binomial)
 * [ ] Hypothesis testing (Z-test, T-test)
 * [ ] Linear regression
 * [ ] CLI tool or Web API version
@@ -158,4 +161,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## 🙌 Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss your proposed additions or fixes.
-

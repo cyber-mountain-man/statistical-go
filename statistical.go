@@ -51,6 +51,7 @@ func MultiplicationRuleDependent(probA, probBgivenA float64) float64 {
 	return probability.MultiplicationDependent(probA, probBgivenA)
 }
 
+
 //
 // MONTE CARLO SIMULATIONS
 //
@@ -61,4 +62,24 @@ func EstimatePi(iterations int) float64 {
 
 func EstimatePiParallel(total, workers int) float64 {
 	return montecarlo.EstimatePiParallel(total, workers)
+}
+
+//
+// PROBABILITY DISTRIBUTIONS
+//
+
+func NormalPDF(x, mean, stddev float64) float64 {
+	return probability.NormalPDF(x, mean, stddev)
+}
+
+func NormalCDF(x, mean, stddev float64) float64 {
+	return probability.NormalCDF(x, mean, stddev)
+}
+
+func BinomialPMF(k, n int, p float64) float64 {
+	return probability.BinomialPMF(k, n, p)
+}
+
+func BinomialCDF(k, n int, p float64) float64 {
+	return probability.BinomialCDF(k, n, p)
 }
