@@ -53,9 +53,9 @@ func TestBinomialCDF(t *testing.T) {
 
 func TestBinomialPMFPanic(t *testing.T) {
 	tests := []struct {
-		name    string
-		n, k    int
-		p       float64
+		name string
+		n, k int
+		p    float64
 	}{
 		{"Negative n", -1, 0, 0.5},
 		{"Negative k", 5, -1, 0.5},
@@ -78,9 +78,9 @@ func TestBinomialPMFPanic(t *testing.T) {
 
 func TestBinomialCDFPanic(t *testing.T) {
 	tests := []struct {
-		name    string
-		n, k    int
-		p       float64
+		name string
+		n, k int
+		p    float64
 	}{
 		{"Negative n", -1, 0, 0.5},
 		{"Negative k", 5, -1, 0.5},

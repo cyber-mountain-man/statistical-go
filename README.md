@@ -5,7 +5,7 @@
 ![Go](https://img.shields.io/badge/Go-1.21+-00ADD8.svg)
 ![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen)
 
-A lightweight, dependency-free Go package for performing descriptive statistics, probability rules, and Monte Carlo simulations — all using the Go standard library.
+A lightweight, dependency-free Go package for performing descriptive statistics, probability rules, distributions, hypothesis testing, and Monte Carlo simulations — all using the Go standard library.
 
 ---
 
@@ -23,22 +23,53 @@ A lightweight, dependency-free Go package for performing descriptive statistics,
   - Estimate Pi using random sampling
   - Parallel version for performance on multicore systems
 
-- ➕ **Probability Rules**
-  - Addition Rule
-  - Multiplication Rule (Independent & Dependent)
-  - Conditional Probability, Complement, Union, Intersection
+- 📊 **Probability Rules & Distributions**
+  - Rules: Addition, Multiplication (Ind./Dep.), Union, Intersection, Complement
+  - Distributions: Normal, Binomial, Uniform, Poisson, Exponential
+
+- 🧪 **Hypothesis Testing**
+  - Z-Test (1-sample & 2-sample)
+  - T-Test (1-sample, 2-sample Welch, Paired)
+  - One-Way ANOVA
+  - Chi-Square Goodness of Fit & Independence
 
 - 📦 **Unified API**
   - `statistical.go` wrapper simplifies access to core functions
 
-- 🧪 **Test Coverage**
-  - ✅ 100% for all core packages (`stat`, `probability`, `montecarlo`, `statistical`)
-  - ⚠️ `examples/` directory intentionally excluded from tests
+- ✅ **Test Coverage**
+  - 100% coverage for all core logic
+  - `examples/` directory intentionally excluded from test suite
 
 - 💡 **Design Philosophy**
   - No external dependencies
   - Beginner-friendly, readable code
-  - Modular structure allows for future expansion (e.g., distributions, hypothesis testing)
+  - Modular structure for easy expansion and real-world use
+
+---
+
+## 🆚 Go vs Python: Feature Comparison
+
+| Statistical Task            | Python (NumPy/SciPy)              | Go (`statistical-go`)                          |
+|-----------------------------|-----------------------------------|------------------------------------------------|
+| Mean                        | `numpy.mean(data)`                | `stat.Mean(data)`                              |
+| Median                      | `numpy.median(data)`              | `stat.Median(data)`                            |
+| Mode                        | `scipy.stats.mode(data)`          | `stat.Mode(data)`                              |
+| Variance                    | `numpy.var(data)`                 | `stat.Variance(data)`                          |
+| Standard Deviation          | `numpy.std(data)`                 | `stat.StdDev(data)`                            |
+| Quartiles                   | `numpy.percentile(data, [25,75])` | `stat.Quartiles(data)`                         |
+| Z-Score                     | `scipy.stats.zscore(data)`        | `stat.ZScore(data)`                            |
+| Covariance                  | `numpy.cov(x, y)`                 | `stat.Covariance(x, y)`                        |
+| Pearson Correlation         | `scipy.stats.pearsonr(x, y)`      | `stat.PearsonCorrelation(x, y)`                |
+| Skewness                    | `scipy.stats.skew(data)`          | `stat.Skewness(data)`                          |
+| Kurtosis                    | `scipy.stats.kurtosis(data)`      | `stat.Kurtosis(data)`                          |
+| Estimate Pi (Monte Carlo)   | custom NumPy code                 | `montecarlo.EstimatePi(n)`                     |
+| Z-Test                      | `scipy.stats.norm.cdf()`          | `hypothesis.OneSampleZTest(...)`               |
+| T-Test (1/2 sample/paired)  | `scipy.stats.ttest_*()`           | `hypothesis.*TTest(...)`                       |
+| Chi-Square Test             | `scipy.stats.chisquare()`         | `hypothesis.ChiSquareGoodnessOfFit(...)`       |
+| ANOVA                       | `scipy.stats.f_oneway()`          | `hypothesis.OneWayANOVA(...)`                  |
+
+> ✅ `statistical-go` uses **no third-party libraries** — just pure Go.
+> Ideal for developers who want to build statistical tooling in Go with full control and zero bloat.
 
 ---
 
@@ -56,6 +87,7 @@ Or install a specific module:
 go get github.com/cyber-mountain-man/statistical-go/stat
 go get github.com/cyber-mountain-man/statistical-go/probability
 go get github.com/cyber-mountain-man/statistical-go/montecarlo
+go get github.com/cyber-mountain-man/statistical-go/hypothesis
 ```
 
 ---
@@ -78,7 +110,7 @@ func main() {
 }
 ```
 
-### 2. Use Wrapper via `statistical.go`
+### 2. Use Unified Wrapper
 
 ```go
 import (
@@ -106,10 +138,10 @@ go test ./...
 ```bash
 go test -coverprofile=coverage.out ./...
 go tool cover -func=coverage.out         # summary in terminal
-go tool cover -html=coverage.out         # opens browser in detail
+go tool cover -html=coverage.out         # interactive HTML
 ```
 
-> 💡 *Current total test coverage: 100% (core logic fully tested; examples excluded by design)*
+> 💡 *Current total test coverage: **100%** (core logic fully tested; examples excluded by design)*
 
 ---
 
@@ -118,23 +150,13 @@ go tool cover -html=coverage.out         # opens browser in detail
 ```
 statistical-go/
 ├── stat/               # Descriptive statistics
-│   ├── descriptive.go
-│   └── descriptive_test.go
-├── probability/        # Probability rules
-│   ├── basic.go
-│   ├── conditional.go
-│   ├── normal.go
-│   ├── binomial.go
-│   └── *_test.go
+├── probability/        # Probability rules & distributions
+├── hypothesis/         # Z-test, T-test, ANOVA, Chi-Square
 ├── montecarlo/         # Monte Carlo simulations
-│   ├── pi.go
-│   └── pi_test.go
 ├── examples/           # Demonstration programs (excluded from tests)
-│   └── main.go
-├── statistical.go      # Facade wrapper for common functions
-├── statistical_test.go # Wrapper tests
-├── go.mod
-└── README.md
+├── statistical.go      # Unified wrapper interface
+├── go.mod              # Module definition
+└── README.md           # Project documentation
 ```
 
 ---
@@ -142,13 +164,14 @@ statistical-go/
 ## 📌 Roadmap
 
 * [x] Descriptive statistics
-* [x] Correlation & variability
+* [x] Probability rules
+* [x] Probability distributions
 * [x] Monte Carlo simulation
 * [x] Unified wrapper interface
-* [x] Probability distributions (Normal, Binomial)
-* [ ] Hypothesis testing (Z-test, T-test)
+* [x] Hypothesis testing (Z-test, T-test, ANOVA, Chi-Square)
 * [ ] Linear regression
 * [ ] CLI tool or Web API version
+* [ ] Visualization support (e.g., histogram output)
 
 ---
 
@@ -161,3 +184,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## 🙌 Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss your proposed additions or fixes.
+
+

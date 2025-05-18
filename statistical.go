@@ -1,6 +1,7 @@
 package statistical
 
 import (
+	"github.com/cyber-mountain-man/statistical-go/hypothesis"
 	"github.com/cyber-mountain-man/statistical-go/montecarlo"
 	"github.com/cyber-mountain-man/statistical-go/probability"
 	"github.com/cyber-mountain-man/statistical-go/stat"
@@ -51,7 +52,6 @@ func MultiplicationRuleDependent(probA, probBgivenA float64) float64 {
 	return probability.MultiplicationDependent(probA, probBgivenA)
 }
 
-
 //
 // MONTE CARLO SIMULATIONS
 //
@@ -82,4 +82,48 @@ func BinomialPMF(k, n int, p float64) float64 {
 
 func BinomialCDF(k, n int, p float64) float64 {
 	return probability.BinomialCDF(k, n, p)
+}
+
+//
+// HYPOTHESIS TESTING
+//
+
+func OneSampleZTest(sampleMean, populationMean, stddev float64, n int) (float64, float64) {
+	res := hypothesis.OneSampleZTest(sampleMean, populationMean, stddev, n)
+	return res.Statistic, res.PValue
+}
+
+func TwoSampleZTest(mean1, mean2, stddev1, stddev2 float64, n1, n2 int) (float64, float64) {
+	res := hypothesis.TwoSampleZTest(mean1, mean2, stddev1, stddev2, n1, n2)
+	return res.Statistic, res.PValue
+}
+
+func OneSampleTTest(sampleMean, populationMean, sampleStdDev float64, n int) (float64, float64) {
+	res := hypothesis.OneSampleTTest(sampleMean, populationMean, sampleStdDev, n)
+	return res.Statistic, res.PValue
+}
+
+func TwoSampleTTestWelch(mean1, mean2, stddev1, stddev2 float64, n1, n2 int) (float64, float64) {
+	res := hypothesis.TwoSampleTTestWelch(mean1, mean2, stddev1, stddev2, n1, n2)
+	return res.Statistic, res.PValue
+}
+
+func PairedTTest(before, after []float64) (float64, float64) {
+	res := hypothesis.PairedTTest(before, after)
+	return res.Statistic, res.PValue
+}
+
+func ChiSquareGoodnessOfFit(observed, expected []float64) (float64, float64, error) {
+	res := hypothesis.ChiSquareGoodnessOfFit(observed, expected)
+	return res.Statistic, res.PValue, res.Err
+}
+
+func ChiSquareTestOfIndependence(observed [][]float64) (float64, float64, error) {
+	res := hypothesis.ChiSquareTestOfIndependence(observed)
+	return res.Statistic, res.PValue, res.Err
+}
+
+func OneWayANOVA(groups [][]float64) (float64, float64, error) {
+	res := hypothesis.OneWayANOVA(groups)
+	return res.Statistic, res.PValue, res.Err
 }

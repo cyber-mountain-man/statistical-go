@@ -40,7 +40,23 @@ func TestStatisticalWrappers(t *testing.T) {
 	_ = NormalPDF(1.0, 0.0, 1.0)
 	_ = NormalCDF(1.0, 0.0, 1.0)
 
-	// Binomial Distribution (valid input: k <= n)
+	// Binomial Distribution
 	_ = BinomialPMF(5, 2, 0.5)
 	_ = BinomialCDF(5, 2, 0.5)
+
+	// Z-Tests
+	_, _ = OneSampleZTest(100, 95, 10, 30)
+	_, _ = TwoSampleZTest(100, 95, 10, 12, 30, 30)
+
+	// T-Tests
+	_, _ = OneSampleTTest(100, 95, 10, 30)
+	_, _ = TwoSampleTTestWelch(100, 95, 10, 12, 30, 30)
+	_, _ = PairedTTest([]float64{1, 2, 3}, []float64{1, 2, 2})
+
+	// Chi-Square
+	_, _, _ = ChiSquareGoodnessOfFit([]float64{10, 20}, []float64{15, 15})
+	_, _, _ = ChiSquareTestOfIndependence([][]float64{{10, 20}, {30, 40}})
+
+	// ANOVA
+	_, _, _ = OneWayANOVA([][]float64{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}})
 }
