@@ -5,6 +5,7 @@ import (
 	"github.com/cyber-mountain-man/statistical-go/montecarlo"
 	"github.com/cyber-mountain-man/statistical-go/probability"
 	"github.com/cyber-mountain-man/statistical-go/stat"
+	"github.com/cyber-mountain-man/statistical-go/regression"
 )
 
 //
@@ -127,3 +128,17 @@ func OneWayANOVA(groups [][]float64) (float64, float64, error) {
 	res := hypothesis.OneWayANOVA(groups)
 	return res.Statistic, res.PValue, res.Err
 }
+
+//
+// LINEAR REGRESSION
+//
+
+func SimpleLinearRegression(x, y []float64) (float64, float64) {
+	return regression.SimpleLinearRegression(x, y)
+}
+
+func PredictY(x, slope, intercept float64) float64 {
+	return regression.PredictY(x, slope, intercept)
+}
+
+

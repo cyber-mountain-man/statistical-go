@@ -59,4 +59,8 @@ func TestStatisticalWrappers(t *testing.T) {
 
 	// ANOVA
 	_, _, _ = OneWayANOVA([][]float64{{1, 2, 3}, {4, 5, 6}, {7, 8, 9}})
+
+	// Linear Regression
+	slope, intercept := SimpleLinearRegression([]float64{1, 2, 3}, []float64{2, 4, 6})
+	_ = PredictY(4, slope, intercept)
 }
