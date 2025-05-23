@@ -1,17 +1,40 @@
 name: CI
 
-on:                       # when to run
-  push:                   # every push to any branch
-  pull_request:           # and every PR
+# ─────────────────────────────────────────────
+# Triggers – run on every push and every PR
+# ─────────────────────────────────────────────
+on:
+  push:        # any branch
+  pull_request:
 
+# ─────────────────────────────────────────────
+# Jobs
+# ─────────────────────────────────────────────
 jobs:
   test:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4     # 1. grab your code
-      - uses: actions/setup-go@v5     # 2. install Go
-        with: { go-version: '1.22' }  #    pick the version you want
-      - run: go test ./...            # 3. run all tests
+      # Check out repo
+      - uses: actions/checkout@v4
 
+      # Install Go
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
 
+      # Static analysis
+      - name: Run vet
+        run: go vet ./...
+
+      # Run unit tests with race detector + coverage
+      - name: Run tests (race + coverage)
+        run: go test -race -coverprofile=coverage.out ./...
+
+      # Upload coverage file (optional but handy)
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage.out
