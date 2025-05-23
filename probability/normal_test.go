@@ -114,3 +114,13 @@ func TestNormalInverseCDFPanic(t *testing.T) {
 		}()
 	}
 }
+
+func TestNormalInverseCDFInvalidSigma(t *testing.T) {
+    defer func() {
+        if r := recover(); r == nil {
+            t.Errorf("expected panic for σ ≤ 0 but got none")
+        }
+    }()
+    _ = NormalInverseCDF(0.5, 0.0, 0.0) // σ = 0 → should panic
+}
+

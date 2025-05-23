@@ -23,3 +23,5 @@ func NormalCDF(x, mean, stdDev float64) float64 {
 	z := (x - mean) / (stdDev * math.Sqrt2)
 	return 0.5 * (1 + math.Erf(z))
 }
+
+

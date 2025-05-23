@@ -19,6 +19,7 @@ func TestSimpleLinearRegression(t *testing.T) {
 	}
 }
 
+
 func TestSimpleLinearRegression_EdgeCases(t *testing.T) {
 	t.Run("Unequal length input", func(t *testing.T) {
 		x := []float64{1, 2, 3}
@@ -76,44 +77,243 @@ func TestIsZeroDenominator(t *testing.T) {
 	})
 }
 
-func TestCalculateSlope_DivisionByZero(t *testing.T) {
+func TestCalculateSlope(t *testing.T) {
+	t.Run("Zero denominator", func(t *testing.T) {
+		x := []float64{1, 1, 1}
+		y := []float64{2, 2, 2}
+		if slope := CalculateSlope(x, y); slope != 0 {
+			t.Errorf("Expected slope=0 when denominator is zero, got %.2f", slope)
+		}
+	})
+
+	t.Run("Empty input", func(t *testing.T) {
+		x := []float64{}
+		y := []float64{}
+		if slope := CalculateSlope(x, y); slope != 0 {
+			t.Errorf("Expected slope=0 for empty input, got %.2f", slope)
+		}
+	})
+}
+
+func TestCalculateIntercept(t *testing.T) {
+	t.Run("Unequal input length", func(t *testing.T) {
+		x := []float64{1, 2, 3}
+		y := []float64{4, 5}
+		slope := 1.0
+		if intercept := CalculateIntercept(x, y, slope); intercept != 0 {
+			t.Errorf("Expected intercept=0 for unequal input, got %.2f", intercept)
+		}
+	})
+
+	t.Run("Empty input", func(t *testing.T) {
+		x := []float64{}
+		y := []float64{}
+		slope := 1.0
+		if intercept := CalculateIntercept(x, y, slope); intercept != 0 {
+			t.Errorf("Expected intercept=0 for empty input, got %.2f", intercept)
+		}
+	})
+}
+
+func TestMeanSquaredError(t *testing.T) {
+	t.Run("Valid input", func(t *testing.T) {
+		yTrue := []float64{3, -0.5, 2, 7}
+		yPred := []float64{2.5, 0.0, 2, 8}
+		expected := 0.375
+		mse := MeanSquaredError(yTrue, yPred)
+		if mse < expected-0.0001 || mse > expected+0.0001 {
+			t.Errorf("Expected MSE ≈ %.3f, got %.3f", expected, mse)
+		}
+	})
+
+	t.Run("Mismatched length", func(t *testing.T) {
+		yTrue := []float64{1, 2, 3}
+		yPred := []float64{1, 2}
+		mse := MeanSquaredError(yTrue, yPred)
+		if mse != 0 {
+			t.Errorf("Expected MSE = 0 for mismatched lengths, got %.3f", mse)
+		}
+	})
+
+	t.Run("Empty slices", func(t *testing.T) {
+		yTrue := []float64{}
+		yPred := []float64{}
+		mse := MeanSquaredError(yTrue, yPred)
+		if mse != 0 {
+			t.Errorf("Expected MSE = 0 for empty input, got %.3f", mse)
+		}
+	})
+}
+
+func TestEvaluateLinearRegression(t *testing.T) {
+	x := []float64{1, 2, 3, 4, 5}
+	y := []float64{2, 4, 5, 4, 5}
+
+	mse := EvaluateLinearRegression(x, y)
+	expected := 0.48
+
+	if mse < expected-0.01 || mse > expected+0.01 {
+		t.Errorf("Expected MSE ≈ %.2f, got %.2f", expected, mse)
+	}
+}
+
+func TestRSquared(t *testing.T) {
+	x := []float64{1, 2, 3, 4, 5}
+	y := []float64{2, 4, 5, 4, 5}
+
+	slope, intercept := SimpleLinearRegression(x, y)
+	r2 := RSquared(x, y, slope, intercept)
+
+	expected := 0.60
+	if r2 < expected-0.01 || r2 > expected+0.01 {
+		t.Errorf("Expected R² ≈ %.2f, got %.2f", expected, r2)
+	}
+}
+
+func TestRSquared_EdgeCases(t *testing.T) {
+	t.Run("Mismatched input lengths", func(t *testing.T) {
+		x := []float64{1, 2, 3}
+		y := []float64{1, 2}
+		if r2 := RSquared(x, y, 1, 0); r2 != 0 {
+			t.Errorf("Expected R² = 0 for mismatched lengths, got %.2f", r2)
+		}
+	})
+
+	t.Run("Empty input", func(t *testing.T) {
+		x := []float64{}
+		y := []float64{}
+		if r2 := RSquared(x, y, 1, 0); r2 != 0 {
+			t.Errorf("Expected R² = 0 for empty input, got %.2f", r2)
+		}
+	})
+
+	t.Run("Zero total variance", func(t *testing.T) {
+		x := []float64{1, 2, 3}
+		y := []float64{5, 5, 5}
+		if r2 := RSquared(x, y, 0, 5); r2 != 0 {
+			t.Errorf("Expected R² = 0 for zero variance, got %.2f", r2)
+		}
+	})
+}
+
+func TestSimpleLinearRegression_ZeroSlopeAndZeroDenominator(t *testing.T) {
 	x := []float64{1, 1, 1}
 	y := []float64{2, 2, 2}
 
-	slope := CalculateSlope(x, y)
-	if slope != 0 {
-		t.Errorf("Expected slope to be 0 when denominator is zero, got %.2f", slope)
+	slope, intercept := SimpleLinearRegression(x, y)
+
+	if slope != 0 || intercept != 0 {
+		t.Errorf("Expected slope and intercept to be 0 for zero denominator case, got slope=%.2f, intercept=%.2f", slope, intercept)
 	}
 }
 
-func TestCalculateIntercept_UnequalLength(t *testing.T) {
-	x := []float64{1, 2, 3}
-	y := []float64{4, 5}
-	slope := 1.0
+func TestSimpleLinearRegression_ZeroSlopeAndZeroDenominatorPath(t *testing.T) {
+	// Identical x-values => zero denominator
+	x := []float64{2, 2, 2}
+	y := []float64{3, 3, 3} // slope would be 0, and denominator is 0
 
-	intercept := CalculateIntercept(x, y, slope)
-	if intercept != 0 {
-		t.Errorf("Expected intercept to be 0 for unequal length input, got %.2f", intercept)
+	slope, intercept := SimpleLinearRegression(x, y)
+
+	if slope != 0 || intercept != 0 {
+		t.Errorf("Expected slope and intercept to be 0 for zero slope and denominator, got slope=%.2f, intercept=%.2f", slope, intercept)
 	}
 }
 
-func TestCalculateIntercept_EmptyInput(t *testing.T) {
-	x := []float64{}
-	y := []float64{}
-	slope := 1.0
+func TestSimpleLinearRegression_ZeroSlope_And_ZeroDenominator_Branch(t *testing.T) {
+	x := []float64{5, 5, 5}
+	y := []float64{7, 7, 7}
 
-	intercept := CalculateIntercept(x, y, slope)
-	if intercept != 0 {
-		t.Errorf("Expected intercept to be 0 for empty input, got %.2f", intercept)
+	slope, intercept := SimpleLinearRegression(x, y)
+
+	if slope != 0 || intercept != 0 {
+		t.Errorf("Expected slope and intercept = 0 due to zero slope and denominator, got slope=%.2f, intercept=%.2f", slope, intercept)
 	}
 }
 
-func TestCalculateSlope_EmptyInput(t *testing.T) {
-	x := []float64{}
-	y := []float64{}
+func TestSimpleLinearRegression_SlopeZeroAndDenominatorZero(t *testing.T) {
+	x := []float64{5, 5, 5} // identical x-values → zero denominator
+	y := []float64{7, 7, 7} // constant y-values → zero slope
 
-	slope := CalculateSlope(x, y)
-	if slope != 0 {
-		t.Errorf("Expected slope to be 0 for empty input, got %.2f", slope)
+	slope, intercept := SimpleLinearRegression(x, y)
+
+	if slope != 0 || intercept != 0 {
+		t.Errorf("Expected slope=0 and intercept=0 for zero denominator and slope, got slope=%.2f, intercept=%.2f", slope, intercept)
 	}
+}
+
+func TestSimpleLinearRegression_SlopeZeroAndDenominatorZero_Explicit(t *testing.T) {
+	// Identical x-values => zero denominator
+	x := []float64{10, 10, 10}
+	// Constant y-values => zero slope
+	y := []float64{5, 5, 5}
+
+	slope, intercept := SimpleLinearRegression(x, y)
+
+	if slope != 0 || intercept != 0 {
+		t.Errorf("Expected slope=0 and intercept=0 for flat x/y, got slope=%.2f, intercept=%.2f", slope, intercept)
+	}
+}
+
+func TestSimpleLinearRegression_ForceZeroSlopeAndDenominator(t *testing.T) {
+	x := []float64{5, 5, 5} // All x-values same → denominator = 0
+	y := []float64{10, 10, 10} // All y-values same → slope = 0
+
+	slope, intercept := SimpleLinearRegression(x, y)
+
+	if slope != 0 || intercept != 0 {
+		t.Errorf("Expected slope=0 and intercept=0 for constant x/y, got slope=%.2f, intercept=%.2f", slope, intercept)
+	}
+}
+
+func TestSimpleLinearRegression_TriggerZeroSlopeAndZeroDenominator(t *testing.T) {
+	x := []float64{2, 2, 2}
+	y := []float64{5, 5, 5}
+
+	slope, intercept := SimpleLinearRegression(x, y)
+
+	if slope != 0 || intercept != 0 {
+		t.Errorf("Expected slope=0 and intercept=0 for constant x and y, got slope=%.2f, intercept=%.2f", slope, intercept)
+	}
+}
+
+func TestSimpleLinearRegression_ConstantXY(t *testing.T) {
+	x := []float64{5, 5, 5, 5, 5}
+	y := []float64{7, 7, 7, 7, 7}
+
+	slope, intercept := SimpleLinearRegression(x, y)
+
+	if slope != 0 || intercept != 0 {
+		t.Errorf("Expected slope=0 and intercept=0 for constant x and y, got slope=%.2f, intercept=%.2f", slope, intercept)
+	}
+}
+
+func TestRootMeanSquaredError(t *testing.T) {
+	t.Run("Valid input", func(t *testing.T) {
+		yTrue := []float64{3, -0.5, 2, 7}
+		yPred := []float64{2.5, 0.0, 2, 8}
+		expected := 0.612372  // sqrt(0.375)
+
+		rmse := RootMeanSquaredError(yTrue, yPred)
+		if rmse < expected-0.0001 || rmse > expected+0.0001 {
+			t.Errorf("Expected RMSE ≈ %.6f, got %.6f", expected, rmse)
+		}
+	})
+
+	t.Run("Mismatched lengths", func(t *testing.T) {
+		yTrue := []float64{1, 2, 3}
+		yPred := []float64{1, 2}
+		rmse := RootMeanSquaredError(yTrue, yPred)
+		if rmse != 0 {
+			t.Errorf("Expected RMSE = 0 for mismatched lengths, got %.3f", rmse)
+		}
+	})
+
+	t.Run("Empty input", func(t *testing.T) {
+		yTrue := []float64{}
+		yPred := []float64{}
+		rmse := RootMeanSquaredError(yTrue, yPred)
+		if rmse != 0 {
+			t.Errorf("Expected RMSE = 0 for empty input, got %.3f", rmse)
+		}
+	})
 }
