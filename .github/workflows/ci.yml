@@ -1,0 +1,17 @@
+name: CI
+
+on:                       # when to run
+  push:                   # every push to any branch
+  pull_request:           # and every PR
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4     # 1. grab your code
+      - uses: actions/setup-go@v5     # 2. install Go
+        with: { go-version: '1.22' }  #    pick the version you want
+      - run: go test ./...            # 3. run all tests
+
+
