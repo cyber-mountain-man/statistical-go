@@ -3,8 +3,11 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/cyber-mountain-man/statistical-go?t=1)](https://goreportcard.com/report/github.com/cyber-mountain-man/statistical-go)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Go](https://img.shields.io/badge/Go-1.21+-00ADD8.svg)
-<!-- Swap for a real Codecov / Coveralls badge once you wire it up -->
+
 ![Coverage](https://img.shields.io/badge/Coverage-100%25-brightgreen)
+
+![CI](https://github.com/cyber-mountain-man/statistical-go/actions/workflows/ci.yml/badge.svg)
+
 
 *A lightweight, dependency-free Go package for descriptive statistics, probability, distributions, hypothesis testing, Monte-Carlo simulations & regularised regression — all implemented with the Go standard library.*
 
