@@ -30,6 +30,10 @@ func StdDev(data []float64) float64      { return stat.StdDev(data) }
 func Variance(data []float64) float64    { return stat.Variance(data) }
 func ZScore(x float64, data []float64) float64 { return stat.ZScore(x, data) }
 
+func ExponentialSmoothing(data []float64, alpha float64) float64 {
+	return stat.ExponentialSmoothing(data, alpha)
+}
+
 //
 // PROBABILITY RULES
 //
@@ -177,3 +181,4 @@ func RidgeRegression(X [][]float64, y []float64, lambda float64) ([]float64, err
 func LassoRegression(X [][]float64, y []float64, lambda float64, maxIter int) ([]float64, error) {
 	return models.LassoRegression(X, y, lambda, maxIter)
 }
+

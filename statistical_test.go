@@ -1,6 +1,12 @@
 package statistical
 
-import "testing"
+import (
+	"math"
+	"testing"
+
+	"github.com/cyber-mountain-man/statistical-go/stat"
+)
+
 
 func TestStatisticalWrappers(t *testing.T) {
 	data := []float64{1, 2, 3, 4, 5}
@@ -104,3 +110,18 @@ func TestStatisticalEdgeCases(t *testing.T) {
 	})
 }
 
+func TestStatisticalWrapper_ExponentialSmoothing(t *testing.T) {
+	data := []float64{50, 52, 58, 60, 63}
+	alpha := 0.5
+
+	// Call the unified wrapper
+	got := ExponentialSmoothing(data, alpha)
+
+
+	// Expected from the stat package directly
+	expected := stat.ExponentialSmoothing(data, alpha)
+
+	if math.Abs(got-expected) > 1e-6 {
+		t.Errorf("ExponentialSmoothing wrapper mismatch: got %.6f, want %.6f", got, expected)
+	}
+}
